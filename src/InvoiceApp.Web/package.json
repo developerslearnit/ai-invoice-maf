@@ -1,0 +1,13 @@
+{
+  "name": "invoice-app-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ASP.NET Core MVC Frontend for Invoice Management & AI Agent training",
+  "scripts": {
+    "css:build": "tailwindcss -i ./Styles/input.css -o ./wwwroot/css/output.css --minify",
+    "css:watch": "tailwindcss -i ./Styles/input.css -o ./wwwroot/css/output.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

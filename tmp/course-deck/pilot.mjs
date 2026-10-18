@@ -1,0 +1,15 @@
+import fs from 'node:fs/promises';
+import {Presentation,PresentationFile} from '@oai/artifact-tool';
+const p=Presentation.create({slideSize:{width:1280,height:720}});
+p.comments.setSelf({displayName:'Course Author',initials:'CA'});
+const s=p.slides.add();s.background.fill='#F6F8FA';
+const title=s.shapes.add({geometry:'textbox',name:'title',position:{left:72,top:65,width:1120,height:80},fill:'none',line:{fill:'none',width:0}});
+title.text='AI integration for .NET engineers';title.text.style={fontSize:46,typeface:'Segoe UI',bold:true,color:'#112C43',insets:0,autoFit:'none'};
+const t=s.tables.add({rows:3,columns:2,left:72,top:190,width:1136,height:260,values:[['Layer','Responsibility'],['Agent','Select functions'],['Domain','Enforce invariants']]});
+t.cells.block({row:0,column:0,rowCount:3,columnCount:2}).assign({textStyle:{fontSize:25,typeface:'Segoe UI',color:'#112C43'},margins:{top:10,bottom:10,left:15,right:15}});
+t.getCell(0,0).fill='#E5EDF1';t.getCell(0,1).fill='#E5EDF1';
+s.speakerNotes.text='AUTHOR COMMENTARY\nDiscuss a write operation and the business boundary.';
+p.comments.addThread({slide:s},'Instructor: Ask where authorization should run.');
+await (await PresentationFile.exportPptx(p)).save('tmp/course-deck/pilot.pptx');
+const png=await p.export({slide:s,format:'png',scale:1});await fs.writeFile('tmp/course-deck/pilot.png',new Uint8Array(await png.arrayBuffer()));
+console.log('Pilot complete');

@@ -1,0 +1,13 @@
+{"kind":"deck","id":"pr/gczdxm","name":"Deck"}
+{"kind":"layout","id":"ly/bitszahc","editable":false,"name":"Master","type":"master"}
+{"kind":"layout","id":"ly/8bqp0nah","editable":false,"name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title"},{"name":"subtitle","type":"subtitle"}]}
+{"kind":"layout","id":"ly/8nyt8vmh","editable":false,"name":"Section Header","type":"sectionHeader","placeholders":[{"name":"title","type":"title"}]}
+{"kind":"layout","id":"ly/7a18vet0","editable":false,"name":"Title and Body","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/032lcb25","editable":false,"name":"Title and Two Column","type":"twoColTx","placeholders":[{"name":"title","type":"title"},{"name":"Left column","type":"body"},{"name":"Right column","type":"body"}]}
+{"kind":"layout","id":"ly/432xg72l","editable":false,"name":"Title and One Column","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/exgr2hcv","editable":false,"name":"Blank","type":"blank"}
+{"kind":"slide","id":"sl/8urqin","slideIndex":0,"layout":{"id":"ly/exgr2hcv","name":"Blank"},"title":"AI integration for .NET engineers","textShapes":1,"backgroundColor":"rgba(246,248,250,1)"}
+{"kind":"textbox","id":"sh/pk7m547a","slideIndex":0,"position":{"left":72,"top":65,"width":1120,"height":80},"name":"title","text":"AI integration for .NET engineers","geometry":"rect","lineWidth":0,"style":{"fontSize":46,"typeface":"Segoe UI","color":"#112C43","bold":true,"alignment":"left"}}
+{"kind":"table","id":"tb/rqh8r29k","slideIndex":0,"position":{"left":72,"top":190,"width":1136,"height":260},"name":"","rows":3,"cols":2,"preview":"Layer | Responsibility"}
+{"kind":"notes","id":"nt/8urqin","slideIndex":0,"text":"AUTHOR COMMENTARY\nDiscuss a write operation and the business boundary."}
+{"kind":"thread","id":"th/mpwf65sj","slideIndex":0,"target":"sl/8urqin","comments":[{"text":"Instructor: Ask where authorization should run.","createdAt":"2026-10-17T05:20:46.216Z"}]}

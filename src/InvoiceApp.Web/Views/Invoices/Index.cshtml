@@ -1,0 +1,208 @@
+@model InvoiceListViewModel
+@{
+    ViewData["Title"] = "Invoices";
+    ViewData["Breadcrumb"] = "Ledger";
+}
+
+<div class="space-y-6">
+    <!-- Filter Panel -->
+    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-soft">
+        <form method="get" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <!-- Search -->
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Search</label>
+                    <input type="text" name="Search" value="@Model.Filters.Search"
+                           placeholder="Invoice # or customer name..."
+                           class="w-full text-xs rounded-xl border border-slate-300 focus:border-brand-500 focus:ring-brand-500 py-2 px-3 bg-slate-50 focus:bg-white" />
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Status</label>
+                    <select name="Status"
+                            class="w-full text-xs rounded-xl border border-slate-300 focus:border-brand-500 focus:ring-brand-500 py-2 px-3 bg-slate-50 focus:bg-white">
+                        <option value="">All Statuses</option>
+                        @foreach (InvoiceStatus status in Enum.GetValues<InvoiceStatus>())
+                        {
+                            <option value="@status" selected="@(Model.Filters.Status == status ? "selected" : null)">@status</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Customer -->
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Customer</label>
+                    <select name="CustomerId"
+                            class="w-full text-xs rounded-xl border border-slate-300 focus:border-brand-500 focus:ring-brand-500 py-2 px-3 bg-slate-50 focus:bg-white">
+                        <option value="">All Customers</option>
+                        @foreach (var c in Model.AvailableCustomers)
+                        {
+                            <option value="@c.Id" selected="@(Model.Filters.CustomerId == c.Id ? "selected" : null)">@c.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Dates -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">From</label>
+                        <input type="date" name="FromDate" value="@(Model.Filters.FromDate?.ToString("yyyy-MM-dd"))"
+                               class="w-full text-xs rounded-xl border border-slate-300 focus:border-brand-500 focus:ring-brand-500 py-2 px-2.5 bg-slate-50 focus:bg-white" />
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">To</label>
+                        <input type="date" name="ToDate" value="@(Model.Filters.ToDate?.ToString("yyyy-MM-dd"))"
+                               class="w-full text-xs rounded-xl border border-slate-300 focus:border-brand-500 focus:ring-brand-500 py-2 px-2.5 bg-slate-50 focus:bg-white" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                <div class="text-xs text-slate-500">
+                    Showing @Model.PagedInvoices.Items.Count of @Model.PagedInvoices.TotalCount invoice(s)
+                </div>
+                <div class="flex items-center gap-2">
+                    <a asp-action="Index" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
+                        Clear Filters
+                    </a>
+                    <button type="submit" class="px-4 py-2 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-xl shadow-sm transition-colors">
+                        Apply Filters
+                    </button>
+                    <button type="button" onclick="AiAssistant.open(); AiAssistant.sendMessage('Summarize our invoice ledger and highlight any overdue accounts')"
+                            class="px-3.5 py-2 text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-brand-700 border border-brand-200 rounded-xl transition-colors inline-flex items-center gap-1.5">
+                        <span>✨ AI Ledger Summary</span>
+                    </button>
+                    <button type="button" onclick="InvoicesManager.openCreateModal()"
+                            class="px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl shadow-sm transition-colors">
+                        + New Invoice
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 flex items-center justify-between">
+            <div class="text-xs">@Model.ErrorMessage</div>
+            <a asp-action="Index" class="text-xs font-semibold underline">Retry</a>
+        </div>
+    }
+
+    <!-- Invoices Table -->
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-soft overflow-hidden">
+        @if (Model.PagedInvoices.Items.Count == 0)
+        {
+            <div class="p-12 text-center">
+                <div class="text-4xl mb-3">📄</div>
+                <h3 class="text-base font-bold text-slate-900">No invoices matched your filters</h3>
+                <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                    Try adjusting the search criteria or create a new invoice draft.
+                </p>
+                <div class="mt-4 flex items-center justify-center gap-2">
+                    <a asp-action="Index" class="px-3 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-xl">Clear Filters</a>
+                    <button type="button" onclick="InvoicesManager.openCreateModal()" class="px-4 py-2 text-xs font-semibold text-white bg-brand-600 rounded-xl shadow-sm">
+                        + New Invoice
+                    </button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-100 text-[11px] font-semibold text-slate-400 uppercase tracking-wider bg-slate-50/50">
+                            <th class="py-3.5 px-6">Invoice #</th>
+                            <th class="py-3.5 px-4">Customer</th>
+                            <th class="py-3.5 px-4">Issue Date</th>
+                            <th class="py-3.5 px-4">Due Date</th>
+                            <th class="py-3.5 px-4 text-right">Amount</th>
+                            <th class="py-3.5 px-4 text-center">Status</th>
+                            <th class="py-3.5 px-6 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-xs">
+                        @foreach (var inv in Model.PagedInvoices.Items)
+                        {
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="py-4 px-6 font-bold text-brand-600">
+                                    <a asp-action="Details" asp-route-id="@inv.Id" class="hover:underline">
+                                        @inv.InvoiceNumber
+                                    </a>
+                                </td>
+                                <td class="py-4 px-4 font-semibold text-slate-900">
+                                    <a asp-controller="Customers" asp-action="Details" asp-route-id="@inv.CustomerId" class="hover:text-brand-600 hover:underline">
+                                        @inv.CustomerName
+                                    </a>
+                                </td>
+                                <td class="py-4 px-4 text-slate-500">@DateHelper.Format(inv.IssueDate)</td>
+                                <td class="py-4 px-4 text-slate-500">@DateHelper.Format(inv.DueDate)</td>
+                                <td class="py-4 px-4 text-right font-bold text-slate-900">@CurrencyHelper.FormatNaira(inv.TotalAmount)</td>
+                                <td class="py-4 px-4 text-center">
+                                    <partial name="_InvoiceStatusBadge" model="inv.Status" />
+                                </td>
+                                <td class="py-4 px-6 text-right">
+                                    <div class="inline-flex items-center gap-1.5">
+                                        <a asp-action="Details" asp-route-id="@inv.Id"
+                                           class="px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-brand-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+                                            View
+                                        </a>
+
+                                        @if (inv.Status == InvoiceStatus.Draft)
+                                        {
+                                            <button type="button"
+                                                    onclick="InvoicesManager.promptDeleteDraft('@inv.Id', '@inv.InvoiceNumber')"
+                                                    class="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
+                                                    title="Delete draft">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            @if (Model.PagedInvoices.TotalPages > 1)
+            {
+                <div class="p-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
+                    <div>
+                        Page @Model.PagedInvoices.Page of @Model.PagedInvoices.TotalPages
+                    </div>
+                    <div class="flex items-center gap-2">
+                        @if (Model.PagedInvoices.HasPreviousPage)
+                        {
+                            <a asp-action="Index"
+                               asp-route-page="@(Model.PagedInvoices.Page - 1)"
+                               asp-route-pageSize="@Model.PagedInvoices.PageSize"
+                               asp-route-search="@Model.Filters.Search"
+                               asp-route-status="@Model.Filters.Status"
+                               asp-route-customerId="@Model.Filters.CustomerId"
+                               class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium transition-colors">
+                                &larr; Previous
+                            </a>
+                        }
+                        @if (Model.PagedInvoices.HasNextPage)
+                        {
+                            <a asp-action="Index"
+                               asp-route-page="@(Model.PagedInvoices.Page + 1)"
+                               asp-route-pageSize="@Model.PagedInvoices.PageSize"
+                               asp-route-search="@Model.Filters.Search"
+                               asp-route-status="@Model.Filters.Status"
+                               asp-route-customerId="@Model.Filters.CustomerId"
+                               class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium transition-colors">
+                                Next &rarr;
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,18 @@
+@model InvoiceStatus
+
+@{
+    var (badgeClass, dotClass, label) = Model switch
+    {
+        InvoiceStatus.Draft => ("bg-slate-100 text-slate-700 border-slate-300", "bg-slate-400", "Draft"),
+        InvoiceStatus.Sent => ("bg-sky-50 text-sky-700 border-sky-200", "bg-sky-500", "Sent"),
+        InvoiceStatus.Paid => ("bg-emerald-50 text-emerald-700 border-emerald-200", "bg-emerald-500", "Paid"),
+        InvoiceStatus.Overdue => ("bg-rose-50 text-rose-700 border-rose-200", "bg-rose-500", "Overdue"),
+        InvoiceStatus.Cancelled => ("bg-zinc-100 text-zinc-500 border-zinc-200", "bg-zinc-400", "Cancelled"),
+        _ => ("bg-slate-100 text-slate-600 border-slate-200", "bg-slate-400", Model.ToString())
+    };
+}
+
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border @badgeClass">
+    <span class="w-1.5 h-1.5 rounded-full @dotClass"></span>
+    @label
+</span>

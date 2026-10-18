@@ -1,0 +1,35 @@
+<!-- Status Transition Confirmation Modal -->
+<div id="status-change-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="status-modal-title" role="dialog" aria-modal="true">
+    <div class="min-h-screen px-4 text-center flex items-center justify-center">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" data-modal-backdrop></div>
+
+        <!-- Modal Card -->
+        <div class="inline-block w-full max-w-md p-6 my-8 text-left align-middle transition-all transform bg-white shadow-2xl rounded-2xl relative border border-slate-200">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-lg">
+                    🔄
+                </div>
+                <div>
+                    <h3 id="status-modal-title" class="text-base font-bold text-slate-900">Confirm Status Transition</h3>
+                    <p class="text-xs text-slate-500">Update invoice status in compliance with billing lifecycle.</p>
+                </div>
+            </div>
+
+            <p id="status-modal-desc" class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/80 mb-6">
+                Are you sure you want to transition this invoice's status?
+            </p>
+
+            <div class="flex items-center justify-end gap-3">
+                <button type="button" data-modal-close="status-change-modal"
+                        class="px-4 py-2.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
+                    Cancel
+                </button>
+                <button type="button" id="status-confirm-btn"
+                        class="px-5 py-2.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl shadow-sm transition-all">
+                    Confirm Transition
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

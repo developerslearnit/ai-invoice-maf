@@ -1,0 +1,385 @@
+@{
+    ViewData["Title"] = "AI Agent Studio";
+    ViewData["Breadcrumb"] = "AI Studio";
+}
+
+<div class="space-y-6">
+    <!-- Studio Header / Hero -->
+    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+        <!-- Background decorative ambient circles -->
+        <div class="absolute -right-12 -top-12 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute right-1/3 -bottom-16 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="space-y-2 max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Microsoft Agent Framework (MAF) Multi-Agent Swarm</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                    InvoiceAI Agent Studio
+                </h1>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Collaborate with specialized autonomous agents to manage customers, draft invoices, execute status transitions, and extract executive debtor insights using natural language and semantic tool calling.
+                </p>
+            </div>
+
+            <!-- Global Status Badge -->
+            <div class="flex flex-col sm:flex-row md:flex-col gap-2 shrink-0">
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                        ⚡
+                    </div>
+                    <div>
+                        <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Orchestrator</div>
+                        <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>Agent Coordinator</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-sm">
+                        🧠
+                    </div>
+                    <div>
+                        <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Tool Execution</div>
+                        <div class="text-xs font-bold text-white">AIFunctionFactory (In-Process)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent Swarm Grid (4 Specialized Autonomous Agents) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Agent 1: Invoice Assistant Agent -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-md transition-all group relative overflow-hidden flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-lg font-bold group-hover:scale-105 transition-transform">
+                        📄
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-100 text-brand-700">
+                        Autonomous
+                    </span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 group-hover:text-brand-600 transition-colors">
+                        Invoice Assistant Agent
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                        Creates invoices, handles line item calculations, executes state machine transitions, and deletes drafts.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-1 text-[10px] font-mono">
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">CreateInvoice</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">UpdateStatus</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">DeleteDraft</span>
+                </div>
+            </div>
+            <button type="button"
+                    onclick="StudioChat.sendPresetPrompt('Create an invoice for Apex Innovations with 2 items: 10 consulting hours at ₦25,000 each and 1 cloud deployment package at ₦150,000, due in two weeks.')"
+                    class="mt-4 w-full py-2 px-3 text-xs font-semibold bg-slate-50 hover:bg-brand-50 text-slate-700 hover:text-brand-700 rounded-xl border border-slate-200 hover:border-brand-200 transition-colors text-left flex items-center justify-between">
+                <span>Demo Create Invoice</span>
+                <span class="text-brand-600">&rarr;</span>
+            </button>
+        </div>
+
+        <!-- Agent 2: Customer Operations Agent -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-md transition-all group relative overflow-hidden flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg font-bold group-hover:scale-105 transition-transform">
+                        👥
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-700">
+                        Autonomous
+                    </span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                        Customer Operations Agent
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                        Onboards new customers, manages contact profiles, validates email uniqueness, and retrieves balances.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-1 text-[10px] font-mono">
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">CreateCustomer</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">UpdateCustomer</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">ListCustomers</span>
+                </div>
+            </div>
+            <button type="button"
+                    onclick="StudioChat.sendPresetPrompt('Create a customer named Apex Innovations Ltd with email billing@apexinnovations.com, phone +234 802 345 6789, address 12 Marina Road, Lagos.')"
+                    class="mt-4 w-full py-2 px-3 text-xs font-semibold bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 hover:border-indigo-200 transition-colors text-left flex items-center justify-between">
+                <span>Demo Onboard Customer</span>
+                <span class="text-indigo-600">&rarr;</span>
+            </button>
+        </div>
+
+        <!-- Agent 3: Billing Analytics Agent -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-md transition-all group relative overflow-hidden flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg font-bold group-hover:scale-105 transition-transform">
+                        📊
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">
+                        Autonomous
+                    </span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                        Billing Analytics Agent
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                        Evaluates executive KPIs, analyzes aging overdue debtors, and compiles status distributions.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-1 text-[10px] font-mono">
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">GetOverdueInvoices</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">GetInvoiceSummary</span>
+                </div>
+            </div>
+            <button type="button"
+                    onclick="StudioChat.sendPresetPrompt('Which customer owes the most money and what is our overall overdue debtor exposure?')"
+                    class="mt-4 w-full py-2 px-3 text-xs font-semibold bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 rounded-xl border border-slate-200 hover:border-emerald-200 transition-colors text-left flex items-center justify-between">
+                <span>Demo Debtor Analysis</span>
+                <span class="text-emerald-600">&rarr;</span>
+            </button>
+        </div>
+
+        <!-- Agent 4: Platform Documentation Agent -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-md transition-all group relative overflow-hidden flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg font-bold group-hover:scale-105 transition-transform">
+                        📚
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700">
+                        Autonomous
+                    </span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors">
+                        Documentation Agent
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                        Answers questions about billing workflow rules, lifecycle invariants, and status state transitions.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-1 text-[10px] font-mono">
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">ReadDocumentation</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">LifecycleRules</span>
+                </div>
+            </div>
+            <button type="button"
+                    onclick="StudioChat.sendPresetPrompt('Can I delete an invoice that was already sent, and what are the valid status transitions?')"
+                    class="mt-4 w-full py-2 px-3 text-xs font-semibold bg-slate-50 hover:bg-amber-50 text-slate-700 hover:text-amber-700 rounded-xl border border-slate-200 hover:border-amber-200 transition-colors text-left flex items-center justify-between">
+                <span>Demo Platform Rules</span>
+                <span class="text-amber-600">&rarr;</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Studio Split Workspace -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Left: Interactive Chat Conversation Console (8 Cols) -->
+        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200/90 shadow-soft flex flex-col h-[750px] overflow-hidden">
+            <!-- Studio Console Header -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between shrink-0 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-500 to-indigo-400 text-white flex items-center justify-center font-bold text-sm shadow">
+                        ✨
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span>Interactive Agent Console</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30">
+                                Live Swarm
+                            </span>
+                        </h2>
+                        <div class="text-[11px] text-slate-400">Natural Language & Tool Calling Interface</div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button type="button" id="studio-clear-btn"
+                            class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 transition-colors inline-flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        <span>Clear Chat</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages Stream -->
+            <div id="studio-messages" class="flex-1 p-6 overflow-y-auto space-y-4 bg-slate-50/40 custom-scrollbar">
+                <!-- System Greeting Bubble -->
+                <div class="flex gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5 text-xs font-bold">
+                        AI
+                    </div>
+                    <div class="max-w-[90%] bg-white border border-slate-200/90 rounded-2xl rounded-tl-sm p-5 shadow-soft text-slate-800 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xs font-bold text-brand-600 flex items-center gap-1.5">
+                                <span>Agent Coordinator</span>
+                                <span class="text-[10px] font-normal text-slate-400">&bull; Supervisor Router</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                Ready
+                            </span>
+                        </div>
+                        <p class="text-sm leading-relaxed text-slate-700">
+                            Welcome to the <strong>InvoiceAI Agent Studio</strong>! I am the multi-agent supervisor. You can issue conversational inquiries or direct autonomous action commands.
+                        </p>
+                        
+                        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/70 space-y-2">
+                            <div class="text-xs font-semibold text-slate-900">Try these direct action commands:</div>
+                            <div class="flex flex-wrap gap-1.5" id="studio-quick-prompts">
+                                <button type="button" class="text-xs bg-white hover:bg-brand-50 text-slate-700 hover:text-brand-700 border border-slate-200 hover:border-brand-200 rounded-lg px-2.5 py-1.5 transition-colors font-medium text-left shadow-2xs"
+                                        onclick="StudioChat.sendPresetPrompt('Create a customer named Apex Innovations Ltd with email billing@apexinnovations.com, phone +234 802 345 6789, address 12 Marina Road, Lagos.')">
+                                    ⚡ Create Customer
+                                </button>
+                                <button type="button" class="text-xs bg-white hover:bg-brand-50 text-slate-700 hover:text-brand-700 border border-slate-200 hover:border-brand-200 rounded-lg px-2.5 py-1.5 transition-colors font-medium text-left shadow-2xs"
+                                        onclick="StudioChat.sendPresetPrompt('Create an invoice for Apex Innovations with 2 items: 10 consulting hours at ₦25,000 each and 1 cloud deployment package at ₦150,000, due in two weeks.')">
+                                    📄 Create Invoice with Line Items
+                                </button>
+                                <button type="button" class="text-xs bg-white hover:bg-brand-50 text-slate-700 hover:text-brand-700 border border-slate-200 hover:border-brand-200 rounded-lg px-2.5 py-1.5 transition-colors font-medium text-left shadow-2xs"
+                                        onclick="StudioChat.sendPresetPrompt('Mark invoice INV-000001 as Paid')">
+                                    💰 Mark Invoice as Paid
+                                </button>
+                                <button type="button" class="text-xs bg-white hover:bg-brand-50 text-slate-700 hover:text-brand-700 border border-slate-200 hover:border-brand-200 rounded-lg px-2.5 py-1.5 transition-colors font-medium text-left shadow-2xs"
+                                        onclick="StudioChat.sendPresetPrompt('Show all overdue invoices')">
+                                    ⚠️ List Overdue Invoices
+                                </button>
+                                <button type="button" class="text-xs bg-white hover:bg-brand-50 text-slate-700 hover:text-brand-700 border border-slate-200 hover:border-brand-200 rounded-lg px-2.5 py-1.5 transition-colors font-medium text-left shadow-2xs"
+                                        onclick="StudioChat.sendPresetPrompt('Which customer owes the most money?')">
+                                    📊 Top Debtor Query
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing / Thinking Indicator -->
+                <div id="studio-typing" class="hidden flex gap-3 items-center">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 text-white flex items-center justify-center shrink-0 shadow-sm text-xs font-bold">
+                        AI
+                    </div>
+                    <div class="bg-white border border-slate-200/90 rounded-2xl rounded-tl-sm px-5 py-3 shadow-soft inline-flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce" style="animation-delay: 0ms"></span>
+                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce" style="animation-delay: 150ms"></span>
+                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce" style="animation-delay: 300ms"></span>
+                        <span class="text-xs font-medium text-slate-500 ml-2" id="studio-typing-text">Agent reasoning & executing tools...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Studio Input Bar -->
+            <div class="p-4 bg-white border-t border-slate-200 shrink-0 space-y-2">
+                <div class="flex items-end gap-2 bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500 focus-within:bg-white transition-all">
+                    <textarea id="studio-input" rows="2"
+                              placeholder="Type a command or question (e.g. 'Create customer...', 'Mark invoice INV-000001 as Paid', 'Which customer owes the most?')..."
+                              class="flex-1 bg-transparent border-0 resize-none text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-0 max-h-36 custom-scrollbar py-1 px-1"></textarea>
+
+                    <button type="button" id="studio-send-btn" disabled
+                            class="p-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-40 disabled:hover:bg-brand-600 text-white transition-all shadow-sm shrink-0"
+                            title="Send prompt">
+                        <svg class="w-5 h-5 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+                    <span>Press <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-200 rounded text-slate-600 text-[10px]">Enter</kbd> to submit, <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-200 rounded text-slate-600 text-[10px]">Shift+Enter</kbd> for newline</span>
+                    <span class="text-brand-600 font-semibold flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span>
+                        Microsoft Agent Framework
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Telemetry & Agent Inspector Panel (4 Cols) -->
+        <div class="lg:col-span-4 space-y-4">
+            <!-- Active Agent Inspector Card -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🕵️</span>
+                        <h3 class="text-sm font-bold text-slate-900">Agent Inspector</h3>
+                    </div>
+                    <span id="inspector-status-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                        Active
+                    </span>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Routed Agent</div>
+                        <div id="inspector-agent-name" class="text-sm font-bold text-slate-900 mt-0.5">
+                            AgentCoordinator (Supervisor)
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="text-[10px] font-semibold text-slate-400 uppercase">Response Latency</div>
+                            <div id="inspector-latency" class="text-base font-bold text-brand-600 mt-0.5">
+                                -- ms
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="text-[10px] font-semibold text-slate-400 uppercase">Confidence Score</div>
+                            <div id="inspector-confidence" class="text-base font-bold text-emerald-600 mt-0.5">
+                                -- %
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Conversation Memory ID</div>
+                        <div id="inspector-conv-id" class="text-xs font-mono bg-slate-100 px-2.5 py-1.5 rounded-lg text-slate-700 mt-1 truncate">
+                            Init on first prompt
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-Time Tool Execution Log -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft space-y-3 flex flex-col h-[420px]">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">⚙️</span>
+                        <h3 class="text-sm font-bold text-slate-900">Tool Execution History</h3>
+                    </div>
+                    <span id="tools-count-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">
+                        0 Runs
+                    </span>
+                </div>
+
+                <p class="text-xs text-slate-500">
+                    Live audit trail of domain tools dispatched by agents to execute your requests:
+                </p>
+
+                <!-- Tools Log List -->
+                <div id="inspector-tools-list" class="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-1">
+                    <div class="p-4 text-center text-slate-400 bg-slate-50/50 rounded-xl border border-dashed border-slate-200 text-xs">
+                        No tools executed yet. Ask the assistant to create a customer or invoice to see tool calling in action!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/studio-chat.js" asp-append-version="true"></script>
+}

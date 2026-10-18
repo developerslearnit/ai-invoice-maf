@@ -1,0 +1,111 @@
+@{
+    var currentController = (ViewContext.RouteData.Values["controller"]?.ToString() ?? "Dashboard").ToLowerInvariant();
+}
+
+<!-- Mobile Backdrop -->
+<div id="sidebar-backdrop" class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm lg:hidden hidden transition-opacity"></div>
+
+<!-- Sidebar Container -->
+<aside id="app-sidebar" class="fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 transform -translate-x-full lg:translate-x-0">
+    <!-- Brand Header -->
+    <div class="h-16 flex items-center px-6 border-b border-slate-100 gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-700 via-brand-600 to-indigo-500 text-white flex items-center justify-center shadow-md shadow-brand-500/20 font-bold text-lg">
+            ⚡
+        </div>
+        <div>
+            <div class="font-bold text-slate-900 tracking-tight text-base leading-tight">InvoiceAI</div>
+            <div class="text-[11px] font-medium text-brand-600 uppercase tracking-wider">Studio</div>
+        </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto custom-scrollbar">
+        <a asp-controller="Dashboard" asp-action="Index"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors @(currentController == "dashboard" ? "bg-brand-50 text-brand-700 font-semibold" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900")">
+            <svg class="w-5 h-5 shrink-0 @(currentController == "dashboard" ? "text-brand-600" : "text-slate-400")" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span>Dashboard</span>
+        </a>
+
+        <a asp-controller="Customers" asp-action="Index"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors @(currentController == "customers" ? "bg-brand-50 text-brand-700 font-semibold" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900")">
+            <svg class="w-5 h-5 shrink-0 @(currentController == "customers" ? "text-brand-600" : "text-slate-400")" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>Customers</span>
+        </a>
+
+        <a asp-controller="Invoices" asp-action="Index"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors @(currentController == "invoices" ? "bg-brand-50 text-brand-700 font-semibold" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900")">
+            <svg class="w-5 h-5 shrink-0 @(currentController == "invoices" ? "text-brand-600" : "text-slate-400")" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Invoices</span>
+        </a>
+
+        <!-- Separator -->
+        <div class="pt-4 pb-2">
+            <div class="border-t border-slate-100"></div>
+        </div>
+
+        <div class="px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+            AI Workshop
+        </div>
+
+        <!-- AI Agent Studio Page Link -->
+        <a asp-controller="Ai" asp-action="Index"
+           class="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors @(currentController == "ai" ? "bg-brand-50 text-brand-700 font-semibold" : "text-slate-700 hover:bg-slate-50 hover:text-slate-900")">
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 rounded-lg bg-gradient-to-tr from-brand-600 to-indigo-500 text-white flex items-center justify-center text-xs shadow-xs font-bold">
+                    ✨
+                </div>
+                <span>AI Agent Studio</span>
+            </div>
+            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-brand-100 text-brand-700">
+                MAF
+            </span>
+        </a>
+
+        <!-- AI Assistant Floating Drawer Quick Trigger -->
+        <button type="button" id="sidebar-ai-btn"
+                class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-500 hover:bg-indigo-50/60 hover:text-brand-600 transition-colors group">
+            <div class="flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Open Quick Drawer</span>
+            </div>
+            <span class="text-[10px] text-slate-400 group-hover:text-brand-600">Pop-up &rarr;</span>
+        </button>
+
+        <!-- Separator -->
+        <div class="pt-4 pb-2">
+            <div class="border-t border-slate-100"></div>
+        </div>
+
+        <div class="px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+            Environment
+        </div>
+
+        <!-- Training Badge Card -->
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-600 space-y-1.5">
+            <div class="flex items-center gap-2 font-semibold text-slate-900">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Training App</span>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+                MVC UI prepared for Microsoft Agent Framework training.
+            </p>
+        </div>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-100 flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-semibold text-slate-600">
+            TR
+        </div>
+        <div class="flex-1 min-w-0">
+            <div class="text-xs font-medium text-slate-900 truncate">Trainee Session</div>
+            <div class="text-[11px] text-slate-400 truncate">ASP.NET Core .NET 10</div>
+        </div>
+    </div>
+</aside>

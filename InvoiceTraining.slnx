@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/InvoiceApp.Api/InvoiceApp.Api.csproj" />
+    <Project Path="src/InvoiceApp.Application/InvoiceApp.Application.csproj" />
+    <Project Path="src/InvoiceApp.Domain/InvoiceApp.Domain.csproj" />
+    <Project Path="src/InvoiceApp.Infrastructure/InvoiceApp.Infrastructure.csproj" />
+    <Project Path="src/InvoiceApp.Web/InvoiceApp.Web.csproj" />
+    <Project Path="src/InvoiceApp.AI/InvoiceApp.AI.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/InvoiceApp.IntegrationTests/InvoiceApp.IntegrationTests.csproj" />
+    <Project Path="tests/InvoiceApp.UnitTests/InvoiceApp.UnitTests.csproj" />
+  </Folder>
+</Solution>
