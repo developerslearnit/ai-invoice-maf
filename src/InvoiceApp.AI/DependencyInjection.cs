@@ -140,9 +140,17 @@ public static class DependencyInjection
             sp.GetRequiredService<SimulationMode>()
         ));
 
-        // 7. Register Orchestrator Coordinator
-        services.AddScoped<IAgentCoordinator, AgentCoordinator>();
-        services.AddScoped<AgentCoordinator>();
+        // 7. Register Orchestrator Coordinator (with LLM Supervisor Routing)
+        services.AddScoped<IAgentCoordinator, AgentCoordinator>(sp => new AgentCoordinator(
+            sp.GetServices<IBaseAgent>(),
+            sp.GetRequiredService<IAgentMemoryService>(),
+            sp.GetRequiredService<IAgentEvaluationService>(),
+            sp.GetRequiredService<ITelemetryService>(),
+            sp.GetRequiredService<ILogger<AgentCoordinator>>(),
+            sp.GetService<IChatClient>(),
+            sp.GetRequiredService<SimulationMode>()
+        ));
+        services.AddScoped<AgentCoordinator>(sp => (AgentCoordinator)sp.GetRequiredService<IAgentCoordinator>());
 
         return services;
     }

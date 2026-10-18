@@ -6,6 +6,7 @@ using InvoiceApp.AI.Memory;
 using InvoiceApp.AI.Telemetry;
 using InvoiceApp.AI.Tools;
 using InvoiceApp.Application.Common.Messaging;
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 
@@ -138,5 +139,101 @@ public class AiTests
         Assert.NotNull(result);
         Assert.True(result.AgentResponse.IsSuccess);
         Assert.Equal("Customer Operations Agent", result.AgentResponse.AgentName);
+    }
+
+    [Fact]
+    public async Task AgentCoordinator_MultiTurnConversation_MaintainsStickyRouting()
+    {
+        var fakeDispatcher = new FakeDispatcher();
+        var simulationMode = new SimulationMode(true);
+        var telemetry = new TelemetryService(NullLogger<TelemetryService>.Instance);
+        var memory = new AgentMemoryService();
+        var eval = new AgentEvaluationService(NullLogger<AgentEvaluationService>.Instance);
+        var options = Options.Create(new AzureOpenAISettings());
+
+        var customerTools = new CustomerTools(fakeDispatcher, NullLogger<CustomerTools>.Instance);
+        var invoiceTools = new InvoiceTools(fakeDispatcher, NullLogger<InvoiceTools>.Instance);
+        var docTools = new DocumentationTools(NullLogger<DocumentationTools>.Instance);
+
+        var agents = new List<IBaseAgent>
+        {
+            new InvoiceAssistantAgent(null, invoiceTools, customerTools, telemetry, NullLogger<InvoiceAssistantAgent>.Instance, options, simulationMode),
+            new CustomerOperationsAgent(null, customerTools, telemetry, NullLogger<CustomerOperationsAgent>.Instance, options, simulationMode),
+            new AnalyticsAgent(null, invoiceTools, customerTools, telemetry, NullLogger<AnalyticsAgent>.Instance, options, simulationMode),
+            new DocumentationAgent(null, docTools, telemetry, NullLogger<DocumentationAgent>.Instance, options, simulationMode)
+        };
+
+        var coordinator = new AgentCoordinator(agents, memory, eval, telemetry, NullLogger<AgentCoordinator>.Instance);
+
+        var conversationId = "test-conv-multi";
+
+        // Turn 1: Initial request to create a customer
+        var turn1 = await coordinator.ProcessAsync(conversationId, "Create customer Apex Global Ltd");
+        Assert.Equal("Customer Operations Agent", turn1.AgentResponse.AgentName);
+
+        // Turn 2: Follow-up answering with details (no customer keywords present)
+        var turn2 = await coordinator.ProcessAsync(conversationId, "billing@apex.com, +2348012345678, 12 Victoria Island");
+        Assert.Equal("Customer Operations Agent", turn2.AgentResponse.AgentName);
+
+        // Turn 3: Explicit intent switch to documentation
+        var turn3 = await coordinator.ProcessAsync(conversationId, "How do I create an invoice in InvoiceAI?");
+        Assert.Equal("Platform Documentation Agent", turn3.AgentResponse.AgentName);
+    }
+
+    [Fact]
+    public async Task AgentCoordinator_WithLiveChatClient_UsesLlmIntentRouting()
+    {
+        var fakeDispatcher = new FakeDispatcher();
+        var simulationMode = new SimulationMode(false); // Live mode enabled
+        var telemetry = new TelemetryService(NullLogger<TelemetryService>.Instance);
+        var memory = new AgentMemoryService();
+        var eval = new AgentEvaluationService(NullLogger<AgentEvaluationService>.Instance);
+        var options = Options.Create(new AzureOpenAISettings());
+
+        var customerTools = new CustomerTools(fakeDispatcher, NullLogger<CustomerTools>.Instance);
+        var invoiceTools = new InvoiceTools(fakeDispatcher, NullLogger<InvoiceTools>.Instance);
+        var docTools = new DocumentationTools(NullLogger<DocumentationTools>.Instance);
+
+        // Fake LLM returning Customer Operations Agent
+        var fakeLlm = new FakeChatClient("Customer Operations Agent");
+
+        var agents = new List<IBaseAgent>
+        {
+            new InvoiceAssistantAgent(fakeLlm, invoiceTools, customerTools, telemetry, NullLogger<InvoiceAssistantAgent>.Instance, options, simulationMode),
+            new CustomerOperationsAgent(fakeLlm, customerTools, telemetry, NullLogger<CustomerOperationsAgent>.Instance, options, simulationMode),
+            new AnalyticsAgent(fakeLlm, invoiceTools, customerTools, telemetry, NullLogger<AnalyticsAgent>.Instance, options, simulationMode),
+            new DocumentationAgent(fakeLlm, docTools, telemetry, NullLogger<DocumentationAgent>.Instance, options, simulationMode)
+        };
+
+        var coordinator = new AgentCoordinator(agents, memory, eval, telemetry, NullLogger<AgentCoordinator>.Instance, fakeLlm, simulationMode);
+
+        // Prompt has NO keywords at all (e.g. pure numbers / ambiguous text)
+        var result = await coordinator.ProcessAsync("conv-live-1", "4294967295");
+
+        Assert.NotNull(result);
+        Assert.Equal("Customer Operations Agent", result.AgentResponse.AgentName);
+    }
+
+    private sealed class FakeChatClient(string responseText) : IChatClient
+    {
+        public ChatClientMetadata Metadata => new("FakeChatClient");
+
+        public Task<ChatResponse> GetResponseAsync(
+            IEnumerable<ChatMessage> chatMessages,
+            ChatOptions? options = null,
+            CancellationToken cancellationToken = default)
+        {
+            var message = new ChatMessage(ChatRole.Assistant, responseText);
+            return Task.FromResult(new ChatResponse(message));
+        }
+
+        public IAsyncEnumerable<ChatResponseUpdate> GetStreamingResponseAsync(
+            IEnumerable<ChatMessage> chatMessages,
+            ChatOptions? options = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+        public object? GetService(Type serviceType, object? serviceKey = null) => null;
+
+        public void Dispose() { }
     }
 }
